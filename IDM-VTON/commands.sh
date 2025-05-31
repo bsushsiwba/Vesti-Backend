@@ -26,4 +26,4 @@ cd ..
 
 pip install -r requirements.txt
 
-python gradio_demo/app.py --port 7860 --share
+python gradio_demo/app.py
