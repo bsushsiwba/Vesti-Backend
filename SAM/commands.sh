@@ -1,3 +1,5 @@
+cd SAM
+
 python -m venv sam
 source sam/bin/activate
 

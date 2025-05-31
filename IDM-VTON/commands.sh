@@ -1,3 +1,5 @@
+cd IDM-VTON
+
 python -m venv idm
 source idm/bin/activate
 

@@ -1,3 +1,5 @@
+cd CatVTON
+
 python -m venv cat
 source cat/bin/activate
 
