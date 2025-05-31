@@ -1,3 +1,6 @@
+python -m venv idm
+source idm/bin/activate
+
 cd ckpt
 cd densepose
 rm model_final_162be9.pkl
