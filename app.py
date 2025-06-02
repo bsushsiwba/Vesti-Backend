@@ -24,6 +24,9 @@ async def create_tryon(
     clothing_type: ClothingType = ClothingType.upper_body,
 ):
     try:
+        if os.path.exists("complete.txt"):
+            os.remove("complete.txt")
+
         # Save human image
         with open("human.png", "wb") as f:
             shutil.copyfileobj(human.file, f)
@@ -36,20 +39,8 @@ async def create_tryon(
         with open("process.txt", "w") as f:
             f.write(clothing_type)
 
-        # Wait for result (timeout after 30 seconds)
-        timeout = 30
-        start_time = time.time()
-        while not os.path.exists("result.png"):
-            if time.time() - start_time > timeout:
-                raise HTTPException(status_code=408, detail="Processing timeout")
+        while not os.path.exists("complete.txt"):
             time.sleep(0.1)
-
-        # Check if there was an error
-        if os.path.exists("complete.txt"):
-            with open("complete.txt", "r") as f:
-                status = f.read().strip()
-                if status.startswith("error"):
-                    raise HTTPException(status_code=500, detail=status)
 
         # Read and return result image
         img = Image.open("result.png")
@@ -60,8 +51,6 @@ async def create_tryon(
         # Cleanup
         if os.path.exists("result.png"):
             os.remove("result.png")
-        if os.path.exists("complete.txt"):
-            os.remove("complete.txt")
 
         return Response(content=img_byte_arr, media_type="image/png")
 
