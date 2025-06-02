@@ -1,3 +1,5 @@
+# file for all commands
+
 #!/bin/bash
 
 # Start tmux session in detached mode
