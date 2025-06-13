@@ -86,8 +86,8 @@ async def create_tryon_dev(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/tryon-dev-url/")
-async def create_tryon_dev_url(
+@app.post("/tryon/")
+async def create_tryon(
     garment: str,
     human: UploadFile = File(...),
     clothing_type: ClothingType = ClothingType.upper_body,
