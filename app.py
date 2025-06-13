@@ -136,6 +136,46 @@ async def create_tryon(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/tryon-demo/")
+async def create_tryon_demo(
+    garment: str,
+    human: UploadFile = File(...),
+    clothing_type: ClothingType = ClothingType.upper_body,
+):
+    try:
+        if os.path.exists("complete.txt"):
+            os.remove("complete.txt")
+
+        # Download and save human image
+        with open("human.png", "wb") as f:
+            shutil.copyfileobj(human.file, f)
+
+        # Download garment image from URL
+        img = download_image(garment)
+        img.save("garment.png")
+
+        # Write process.txt with clothing type
+        with open("process.txt", "w") as f:
+            f.write(clothing_type)
+
+        time.sleep(1)
+
+        # Read and return result image
+        img = Image.open("human.png")
+        img_byte_arr = io.BytesIO()
+        img.save(img_byte_arr, format="PNG")
+        img_byte_arr = img_byte_arr.getvalue()
+
+        # Cleanup
+        if os.path.exists("human.png"):
+            os.remove("human.png")
+
+        return Response(content=img_byte_arr, media_type="image/png")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 if __name__ == "__main__":
     import uvicorn
 
